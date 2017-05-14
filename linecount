@@ -17,19 +17,18 @@ def count_lines(path):
         files = os.listdir(path)
         for file in files:
             full_file_path = os.path.join(path,file)
-            if os.path.isdir(full_file_path):
-                count_lines(full_file_path)
-            elif os.path.isfile(full_file_path) and (not os.path.islink(full_file_path)):
-                ext = os.path.splitext(file)[1]
-                if ext not in sig_rules:
-                    print 'Skipping '+full_file_path
-                else:
-                    data = open(full_file_path).read().split('\n')
-                    f_lines = len(data)
-                    f_sig = len(filter(sig_rules[ext],data))
-                    total_lines += f_lines
-                    total_sig += f_sig
-                    print full_file_path.ljust(60)+str(f_lines)+'\t'+str(f_sig)
+            count_lines(full_file_path)
+    elif os.path.isfile(path) and (not os.path.islink(path)):
+        ext = os.path.splitext(path)[1]
+        if ext not in sig_rules:
+            print 'Skipping '+path
+        else:
+            data = open(path).read().split('\n')
+            f_lines = len(data)
+            f_sig = len(filter(sig_rules[ext],data))
+            total_lines += f_lines
+            total_sig += f_sig
+            print path.ljust(60)+str(f_lines)+'\t'+str(f_sig)
 
 count_lines('.')
 
